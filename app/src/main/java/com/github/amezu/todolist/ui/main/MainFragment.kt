@@ -29,11 +29,14 @@ class MainFragment : Fragment() {
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
-    @SuppressLint("CheckResult")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        initAdapter()
+    }
 
+    @SuppressLint("CheckResult")
+    private fun initAdapter() {
         adapter = TodosAdapter()
         lv_todos.adapter = adapter
         lv_todos.layoutManager = LinearLayoutManager(activity)
