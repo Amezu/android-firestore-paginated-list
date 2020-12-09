@@ -1,12 +1,17 @@
 package com.github.amezu.todolist.ui.main
 
-import androidx.lifecycle.ViewModelProvider
+import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.amezu.todolist.R
+import com.github.amezu.todolist.model.Todo
+import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment() {
 
@@ -15,16 +20,32 @@ class MainFragment : Fragment() {
     }
 
     private lateinit var viewModel: MainViewModel
+    private lateinit var adapter: TodosAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
+    @SuppressLint("CheckResult")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // TODO: Use the ViewModel
+
+        adapter = TodosAdapter()
+        lv_todos.adapter = adapter
+        lv_todos.layoutManager = LinearLayoutManager(activity)
+
+        viewModel.loadTodos()
+            .subscribe(
+                { t: List<Todo>? -> adapter.submitList(t) },
+                { t: Throwable -> showError(t) }
+            )
     }
 
+    private fun showError(throwable: Throwable?) {
+        Toast.makeText(context, throwable.toString(), Toast.LENGTH_SHORT).show()
+    }
 }
