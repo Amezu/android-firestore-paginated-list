@@ -14,8 +14,10 @@ import com.github.amezu.todolist.model.Todo
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class TodosAdapter(lifecycleOwner: LifecycleOwner, pageSize: Int) :
-    FirestorePagingAdapter<Todo, TodosAdapter.ViewHolder>(
+class TodosAdapter private constructor(options: FirestorePagingOptions<Todo>) :
+    FirestorePagingAdapter<Todo, TodosAdapter.ViewHolder>(options) {
+
+    constructor(lifecycleOwner: LifecycleOwner, pageSize: Int) : this(
         FirestorePagingOptions.Builder<Todo>()
             .setLifecycleOwner(lifecycleOwner)
             .setQuery(
@@ -27,7 +29,8 @@ class TodosAdapter(lifecycleOwner: LifecycleOwner, pageSize: Int) :
                     .build(),
                 Todo::class.java
             ).build()
-    ) {
+    )
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
             .inflate(R.layout.todo_row, parent, false)
