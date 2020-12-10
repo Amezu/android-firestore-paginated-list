@@ -12,11 +12,6 @@ import com.github.amezu.todolist.R
 import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = MainFragment()
-    }
-
     private lateinit var adapter: TodosAdapter
 
     override fun onCreateView(
