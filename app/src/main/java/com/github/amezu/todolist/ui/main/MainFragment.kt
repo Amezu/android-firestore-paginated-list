@@ -28,7 +28,7 @@ class MainFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        adapter = TodosAdapter(this, 30)
+        adapter = TodosAdapter(this)
         lv_todos.adapter = adapter
         lv_todos.layoutManager = LinearLayoutManager(activity)
     }

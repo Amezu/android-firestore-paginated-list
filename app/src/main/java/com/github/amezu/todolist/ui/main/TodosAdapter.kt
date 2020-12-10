@@ -14,22 +14,8 @@ import com.github.amezu.todolist.model.Todo
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class TodosAdapter private constructor(options: FirestorePagingOptions<Todo>) :
-    FirestorePagingAdapter<Todo, TodosAdapter.ViewHolder>(options) {
-
-    constructor(lifecycleOwner: LifecycleOwner, pageSize: Int) : this(
-        FirestorePagingOptions.Builder<Todo>()
-            .setLifecycleOwner(lifecycleOwner)
-            .setQuery(
-                Firebase.firestore.collection("todos"),
-                PagedList.Config.Builder()
-                    .setEnablePlaceholders(false)
-                    .setInitialLoadSizeHint(pageSize)
-                    .setPageSize(pageSize)
-                    .build(),
-                Todo::class.java
-            ).build()
-    )
+class TodosAdapter constructor(lifecycleOwner: LifecycleOwner) :
+    FirestorePagingAdapter<Todo, TodosAdapter.ViewHolder>(PagingOptionsBuilder(lifecycleOwner).build()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
@@ -47,5 +33,24 @@ class TodosAdapter private constructor(options: FirestorePagingOptions<Todo>) :
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         internal val titleView: TextView = v.findViewById(R.id.tv_title)
         internal val descriptionView: TextView = v.findViewById(R.id.tv_desc)
+    }
+
+    private class PagingOptionsBuilder(
+        private val lifecycleOwner: LifecycleOwner,
+        private val pageSize: Int = 30
+    ) {
+        fun build(): FirestorePagingOptions<Todo> {
+            val config = PagedList.Config.Builder()
+                .setEnablePlaceholders(false)
+                .setInitialLoadSizeHint(pageSize)
+                .setPageSize(pageSize)
+                .build()
+            val query = Firebase.firestore.collection("todos")
+
+            return FirestorePagingOptions.Builder<Todo>()
+                .setLifecycleOwner(lifecycleOwner)
+                .setQuery(query, config, Todo::class.java)
+                .build()
+        }
     }
 }
