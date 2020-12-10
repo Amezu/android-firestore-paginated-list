@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.amezu.todolist.R
-import com.github.amezu.todolist.model.Todo
 import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment() {
@@ -19,7 +18,6 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
-    private lateinit var viewModel: MainViewModel
     private lateinit var adapter: TodosAdapter
 
     override fun onCreateView(
@@ -31,21 +29,13 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         initAdapter()
     }
 
-    @SuppressLint("CheckResult")
     private fun initAdapter() {
-        adapter = TodosAdapter()
+        adapter = TodosAdapter(this, 30)
         lv_todos.adapter = adapter
         lv_todos.layoutManager = LinearLayoutManager(activity)
-
-        viewModel.loadTodos()
-            .subscribe(
-                { t: List<Todo>? -> adapter.submitList(t) },
-                { t: Throwable -> showError(t) }
-            )
     }
 
     private fun showError(throwable: Throwable?) {

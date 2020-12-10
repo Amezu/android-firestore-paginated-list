@@ -7,6 +7,5 @@ data class Todo(
     val title: String = "",
     val description: String = "",
     val iconUrl: String? = null,
-    val createdDate: Date = Date(),
-    val id: Long = Random.nextLong()
+    val createdDate: Date = Date()
 )
