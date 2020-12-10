@@ -16,4 +16,12 @@ class FirebaseTodoRepository {
                 .addOnSuccessListener { emitter.onComplete() }
         }
     }
+
+    fun delete(todo: Todo): Completable {
+        return Completable.create { emitter ->
+            collection.document(todo.id).delete()
+                .addOnFailureListener { emitter.onError(it) }
+                .addOnSuccessListener { emitter.onComplete() }
+        }
+    }
 }

@@ -14,8 +14,10 @@ import com.github.amezu.todolist.model.Todo
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-class TodosAdapter constructor(lifecycleOwner: LifecycleOwner) :
-    FirestorePagingAdapter<Todo, TodosAdapter.ViewHolder>(PagingOptionsBuilder(lifecycleOwner).build()) {
+class TodosAdapter constructor(
+    lifecycleOwner: LifecycleOwner,
+    private val longClickListener: (Todo, Int) -> Unit
+) : FirestorePagingAdapter<Todo, TodosAdapter.ViewHolder>(PagingOptionsBuilder(lifecycleOwner).build()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
@@ -27,6 +29,7 @@ class TodosAdapter constructor(lifecycleOwner: LifecycleOwner) :
         viewHolder.apply {
             titleView.text = item.title
             descriptionView.text = item.description
+            itemView.setOnLongClickListener { longClickListener(item, adapterPosition); true }
         }
     }
 

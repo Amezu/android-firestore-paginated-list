@@ -1,11 +1,12 @@
 package com.github.amezu.todolist.model
 
+import com.google.firebase.firestore.DocumentId
 import java.util.*
-import kotlin.random.Random
 
 data class Todo(
     val title: String = "",
     val description: String = "",
     val iconUrl: String? = null,
-    val createdDate: Date = Date()
+    val createdDate: Date = Date(),
+    @DocumentId val id: String = ""
 )
