@@ -1,8 +1,6 @@
 package com.github.amezu.todolist.repo
 
-import com.github.amezu.todolist.model.Todo
-
-data class Change(
-    val item: Todo,
+data class Change<T>(
+    val item: T,
     val type: ChangeType
 )

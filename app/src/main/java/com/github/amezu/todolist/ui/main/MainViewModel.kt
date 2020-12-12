@@ -9,7 +9,7 @@ class MainViewModel : ViewModel() {
     private val todoRepository = FirebaseTodoRepository()
     private val disposables = CompositeDisposable()
 
-    fun getChanges() = todoRepository.getChanges()
+    fun getNextPage() = todoRepository.getNextPage()
 
     fun delete(id: String, errorHandler: (Throwable) -> Unit) {
         todoRepository.delete(id)

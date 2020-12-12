@@ -72,7 +72,7 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
     }
 
     private fun getItems() {
-        viewModel.getChanges()?.let {
+        viewModel.getNextPage()?.let {
             it.observe(viewLifecycleOwner) { change ->
                 when (change.type) {
                     ChangeType.ADDED -> todos.add(change.item)
@@ -114,7 +114,7 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
         Toast.makeText(context, throwable.toString(), Toast.LENGTH_SHORT).show()
     }
 
-    private fun List<Todo>.findItemIndex(change: Change): Int? {
+    private fun List<Todo>.findItemIndex(change: Change<Todo>): Int? {
         return indexOfFirst { it.id == change.item.id }.takeUnless { it < 0 }
     }
 }
