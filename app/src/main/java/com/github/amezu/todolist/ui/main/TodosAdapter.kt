@@ -49,7 +49,7 @@ class TodosAdapter constructor(
                     if (it.isPresent) {
                         bind(it.get())
                     } else {
-                        notifyItemRemoved(position)
+                        bind(Todo(itemView.context.getString(R.string.todos_item_deleted)))
                     }
                 }, Throwable::printStackTrace
             ).addTo(disposables)
