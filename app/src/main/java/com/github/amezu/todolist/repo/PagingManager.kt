@@ -3,7 +3,7 @@ package com.github.amezu.todolist.repo
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 
-class PagingManager internal constructor(
+internal class PagingManager internal constructor(
     initialQuery: Query,
     private val pageSize: Int = 30
 ) {
@@ -19,13 +19,13 @@ class PagingManager internal constructor(
         }
     }
 
-    fun getNextPage(): TodosLiveData? {
+    fun getNextPage(): TodosChangesLiveData? {
         if (isLastItemReached) {
             return null
         }
 
         lastLoadedItem?.let { query = query.startAfter(it) }
 
-        return TodosLiveData(TodosChangesSubscription(query, this))
+        return TodosChangesLiveData(TodosChangesSubscription(query, this))
     }
 }

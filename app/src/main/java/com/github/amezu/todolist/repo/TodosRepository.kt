@@ -5,7 +5,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import io.reactivex.Completable
 
-class FirebaseTodoRepository {
+class TodosRepository {
     private val db = Firebase.firestore
     private val collectionPath = "todos"
     private val collection = db.collection(collectionPath)
@@ -27,7 +27,7 @@ class FirebaseTodoRepository {
         }
     }
 
-    fun getNextPage(): TodosLiveData? {
+    fun getNextPage(): TodosChangesLiveData? {
         return pagingManager.getNextPage()
     }
 }

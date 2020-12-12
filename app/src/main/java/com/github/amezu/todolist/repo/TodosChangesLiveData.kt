@@ -4,8 +4,7 @@ import androidx.lifecycle.LiveData
 import com.github.amezu.todolist.model.Change
 import com.github.amezu.todolist.model.Todo
 
-
-class TodosLiveData internal constructor(
+class TodosChangesLiveData internal constructor(
     private val changesSubscription: TodosChangesSubscription
 ) : LiveData<Change<Todo>>(), TodosChangesSubscription.Observer {
 

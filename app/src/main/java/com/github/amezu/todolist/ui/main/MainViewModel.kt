@@ -1,12 +1,12 @@
 package com.github.amezu.todolist.ui.main
 
 import androidx.lifecycle.ViewModel
-import com.github.amezu.todolist.repo.FirebaseTodoRepository
+import com.github.amezu.todolist.repo.TodosRepository
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 
 class MainViewModel : ViewModel() {
-    private val todoRepository = FirebaseTodoRepository()
+    private val todoRepository = TodosRepository()
     private val disposables = CompositeDisposable()
 
     fun getNextPage() = todoRepository.getNextPage()

@@ -2,11 +2,11 @@ package com.github.amezu.todolist.ui.add_todo
 
 import androidx.lifecycle.ViewModel
 import com.github.amezu.todolist.model.Todo
-import com.github.amezu.todolist.repo.FirebaseTodoRepository
+import com.github.amezu.todolist.repo.TodosRepository
 import io.reactivex.disposables.CompositeDisposable
 
 class AddTodoViewModel : ViewModel() {
-    private val todoRepository = FirebaseTodoRepository()
+    private val todoRepository = TodosRepository()
     private val compositeDisposable = CompositeDisposable()
 
     fun doOnSaveClick(

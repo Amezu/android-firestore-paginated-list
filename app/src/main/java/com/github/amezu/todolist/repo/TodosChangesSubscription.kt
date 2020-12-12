@@ -5,7 +5,7 @@ import com.github.amezu.todolist.model.ChangeType
 import com.github.amezu.todolist.model.Todo
 import com.google.firebase.firestore.*
 
-class TodosChangesSubscription(
+internal class TodosChangesSubscription(
     private val query: Query,
     private val pagingManager: PagingManager
 ) : EventListener<QuerySnapshot?> {
