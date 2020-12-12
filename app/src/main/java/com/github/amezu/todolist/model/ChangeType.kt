@@ -1,4 +1,4 @@
-package com.github.amezu.todolist.repo
+package com.github.amezu.todolist.model
 
 enum class ChangeType {
     ADDED,

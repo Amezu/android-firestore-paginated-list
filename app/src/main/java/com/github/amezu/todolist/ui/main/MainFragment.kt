@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.amezu.todolist.R
 import com.github.amezu.todolist.model.Todo
-import com.github.amezu.todolist.repo.Change
-import com.github.amezu.todolist.repo.ChangeType
+import com.github.amezu.todolist.model.Change
+import com.github.amezu.todolist.model.ChangeType
 import kotlinx.android.synthetic.main.main_fragment.*
 
 

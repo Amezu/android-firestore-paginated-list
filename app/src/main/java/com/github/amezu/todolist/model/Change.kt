@@ -1,4 +1,4 @@
-package com.github.amezu.todolist.repo
+package com.github.amezu.todolist.model
 
 data class Change<T>(
     val item: T,
