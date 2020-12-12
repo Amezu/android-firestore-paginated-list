@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.amezu.todolist.R
@@ -33,9 +34,12 @@ class MainFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        adapter = TodosAdapter(this, this::deleteItem)
+        adapter = TodosAdapter(this::deleteItem)
         lv_todos.adapter = adapter
         lv_todos.layoutManager = LinearLayoutManager(activity)
+        viewModel.todos.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
     }
 
     private fun initFab() {
