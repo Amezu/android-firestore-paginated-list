@@ -13,9 +13,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.amezu.todolist.R
-import com.github.amezu.todolist.model.Todo
 import com.github.amezu.todolist.model.Change
 import com.github.amezu.todolist.model.ChangeType
+import com.github.amezu.todolist.model.Todo
 import kotlinx.android.synthetic.main.main_fragment.*
 
 
@@ -36,15 +36,19 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        initAdapter()
-        getItems()
+        initList()
         initFab()
     }
 
-    private fun initAdapter() {
+    private fun initList() {
         adapter = TodosAdapter(todos, this::showDeleteItemDialog)
         lv_todos.adapter = adapter
         lv_todos.layoutManager = LinearLayoutManager(activity)
+        loadNextPage()
+        setupLoadingNextPage()
+    }
+
+    private fun setupLoadingNextPage() {
         lv_todos.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
@@ -55,24 +59,26 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                val layoutManager =
-                    recyclerView.layoutManager as LinearLayoutManager?
-                if (layoutManager != null) {
-                    val firstVisibleProductPosition =
-                        layoutManager.findFirstVisibleItemPosition()
-                    val visibleProductCount = layoutManager.childCount
-                    val totalProductCount = layoutManager.itemCount
-                    if (isScrolling && firstVisibleProductPosition + visibleProductCount == totalProductCount) {
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager?
+                layoutManager?.let {
+                    if (isScrolling && it.isNextItemNotLoaded()) {
                         isScrolling = false
-                        getItems()
+                        loadNextPage()
                     }
                 }
+            }
+
+            private fun LinearLayoutManager.isNextItemNotLoaded(): Boolean {
+                val firstVisibleItemPosition = findFirstVisibleItemPosition()
+                val visibleItemsCount = childCount
+                val totalProductCount = itemCount
+                return firstVisibleItemPosition + visibleItemsCount == totalProductCount
             }
         })
     }
 
-    private fun getItems() {
-        viewModel.getNextPage()?.let {
+    private fun loadNextPage() {
+        viewModel.loadNextPage()?.let {
             it.observe(viewLifecycleOwner) { change ->
                 when (change.type) {
                     ChangeType.ADDED -> todos.add(change.item)

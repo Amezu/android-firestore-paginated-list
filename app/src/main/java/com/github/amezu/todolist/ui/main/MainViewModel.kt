@@ -9,7 +9,7 @@ class MainViewModel : ViewModel() {
     private val todoRepository = TodosRepository()
     private val disposables = CompositeDisposable()
 
-    fun getNextPage() = todoRepository.getNextPage()
+    fun loadNextPage() = todoRepository.getNextPage()
 
     fun delete(id: String, errorHandler: (Throwable) -> Unit) {
         todoRepository.delete(id)
