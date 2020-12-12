@@ -14,7 +14,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 
 class TodosAdapter constructor(
-    private val longClickListener: (Todo, Int) -> Unit
+    private val longClickListener: (Todo) -> Unit
 ) : PagedListAdapter<RealtimeTodo, TodosAdapter.ViewHolder>(
     object : DiffUtil.ItemCallback<RealtimeTodo?>() {
         override fun areItemsTheSame(oldItem: RealtimeTodo, newItem: RealtimeTodo): Boolean {
@@ -58,7 +58,7 @@ class TodosAdapter constructor(
         private fun bind(item: Todo) {
             titleView.text = item.title
             descriptionView.text = item.description
-            itemView.setOnLongClickListener { longClickListener(item, adapterPosition); true }
+            itemView.setOnLongClickListener { longClickListener(item); true }
         }
     }
 }

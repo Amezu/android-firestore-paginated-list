@@ -9,10 +9,11 @@ import com.github.amezu.todolist.repo.FirebaseTodoRepository
 import com.github.amezu.todolist.repo.RealtimeTodo
 import com.github.amezu.todolist.repo.TodosDataSource
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 
 class MainViewModel : ViewModel() {
     private val todoRepository = FirebaseTodoRepository()
-    private val compositeDisposable = CompositeDisposable()
+    private val disposables = CompositeDisposable()
 
     private val config = PagedList.Config.Builder()
         .setEnablePlaceholders(false)
@@ -27,16 +28,16 @@ class MainViewModel : ViewModel() {
 
     fun delete(
         todo: Todo,
-        errorHandler: (Throwable) -> Unit,
-        successHandler: () -> Unit
+        errorHandler: (Throwable) -> Unit
     ) {
-        val disposable = todoRepository.delete(todo)
-            .subscribe(successHandler, errorHandler)
-        compositeDisposable.add(disposable)
+        todoRepository.delete(todo)
+            .doOnError(errorHandler)
+            .subscribe()
+            .addTo(disposables)
     }
 
     override fun onCleared() {
-        compositeDisposable.dispose()
+        disposables.dispose()
         super.onCleared()
     }
 }

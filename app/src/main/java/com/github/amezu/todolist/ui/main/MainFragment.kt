@@ -48,10 +48,8 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun deleteItem(item: Todo, position: Int) {
-        viewModel.delete(item, this::showError) {
-            adapter.notifyItemRemoved(position)
-        }
+    private fun deleteItem(item: Todo) {
+        viewModel.delete(item, this::showError)
     }
 
     private fun showError(throwable: Throwable?) {
