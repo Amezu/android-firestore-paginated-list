@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.github.amezu.todolist.model.Todo
 import com.github.amezu.todolist.repo.FirebaseTodoRepository
 import com.github.amezu.todolist.repo.RealtimeTodo
 import com.github.amezu.todolist.repo.TodosDataSource
@@ -26,11 +25,8 @@ class MainViewModel : ViewModel() {
             config
         ).build()
 
-    fun delete(
-        todo: Todo,
-        errorHandler: (Throwable) -> Unit
-    ) {
-        todoRepository.delete(todo)
+    fun delete(id: String, errorHandler: (Throwable) -> Unit) {
+        todoRepository.delete(id)
             .doOnError(errorHandler)
             .subscribe()
             .addTo(disposables)

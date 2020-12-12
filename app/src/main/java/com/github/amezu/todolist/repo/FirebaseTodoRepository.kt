@@ -22,9 +22,9 @@ class FirebaseTodoRepository {
         }
     }
 
-    fun delete(todo: Todo): Completable {
+    fun delete(id: String): Completable {
         return Completable.create { emitter ->
-            collection.document(todo.id).delete()
+            collection.document(id).delete()
                 .addOnFailureListener { emitter.onError(it) }
                 .addOnSuccessListener { emitter.onComplete() }
         }

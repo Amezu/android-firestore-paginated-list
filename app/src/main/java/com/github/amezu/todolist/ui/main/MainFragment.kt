@@ -14,7 +14,7 @@ import com.github.amezu.todolist.R
 import com.github.amezu.todolist.model.Todo
 import kotlinx.android.synthetic.main.main_fragment.*
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: TodosAdapter
 
@@ -34,7 +34,7 @@ class MainFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        adapter = TodosAdapter(this::deleteItem)
+        adapter = TodosAdapter(this::showDeleteItemDialog)
         lv_todos.adapter = adapter
         lv_todos.layoutManager = LinearLayoutManager(activity)
         viewModel.todos.observe(viewLifecycleOwner) {
@@ -48,8 +48,13 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun deleteItem(item: Todo) {
-        viewModel.delete(item, this::showError)
+    private fun showDeleteItemDialog(item: Todo) {
+        DeleteTodoDialogFragment.newInstance(this, item.id)
+            .show(parentFragmentManager, "dialog")
+    }
+
+    override fun onDeleteAccepted(id: String) {
+        viewModel.delete(id, this::showError)
     }
 
     private fun showError(throwable: Throwable?) {
