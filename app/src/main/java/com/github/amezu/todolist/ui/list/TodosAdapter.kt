@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.github.amezu.todolist.R
-import com.github.amezu.todolist.model.Todo
+import com.github.amezu.todolist.data.model.Todo
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 

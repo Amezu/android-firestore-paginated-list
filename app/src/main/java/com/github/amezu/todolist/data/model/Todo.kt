@@ -1,4 +1,4 @@
-package com.github.amezu.todolist.model
+package com.github.amezu.todolist.data.model
 
 import android.os.Parcelable
 import com.google.firebase.firestore.DocumentId

@@ -1,4 +1,4 @@
-package com.github.amezu.todolist.repo
+package com.github.amezu.todolist.data.repo
 
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query

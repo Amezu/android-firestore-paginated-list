@@ -1,8 +1,8 @@
-package com.github.amezu.todolist.repo
+package com.github.amezu.todolist.data.repo
 
-import com.github.amezu.todolist.model.list.Change
-import com.github.amezu.todolist.model.list.ChangeType
-import com.github.amezu.todolist.model.Todo
+import com.github.amezu.todolist.data.model.list.Change
+import com.github.amezu.todolist.data.model.list.ChangeType
+import com.github.amezu.todolist.data.model.Todo
 import com.google.firebase.firestore.*
 
 internal class TodosChangesSubscription(

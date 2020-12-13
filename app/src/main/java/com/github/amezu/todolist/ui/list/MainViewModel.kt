@@ -3,10 +3,10 @@ package com.github.amezu.todolist.ui.list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.amezu.todolist.model.list.Change
-import com.github.amezu.todolist.model.list.ChangeType
-import com.github.amezu.todolist.model.Todo
-import com.github.amezu.todolist.repo.TodosRepository
+import com.github.amezu.todolist.data.model.list.Change
+import com.github.amezu.todolist.data.model.list.ChangeType
+import com.github.amezu.todolist.data.model.Todo
+import com.github.amezu.todolist.data.repo.TodosRepository
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject

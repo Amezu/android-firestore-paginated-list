@@ -1,7 +1,7 @@
 package com.github.amezu.todolist.di
 
-import com.github.amezu.todolist.repo.FirebaseTodosRepository
-import com.github.amezu.todolist.repo.TodosRepository
+import com.github.amezu.todolist.data.repo.FirebaseTodosRepository
+import com.github.amezu.todolist.data.repo.TodosRepository
 import dagger.Binds
 import dagger.Module
 

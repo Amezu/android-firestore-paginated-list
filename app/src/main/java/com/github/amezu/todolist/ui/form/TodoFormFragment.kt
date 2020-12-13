@@ -10,10 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.github.amezu.todolist.R
-import com.github.amezu.todolist.afterTextChanged
+import com.github.amezu.todolist.ui.afterTextChanged
 import com.github.amezu.todolist.di.DaggerTodoFormFragmentComponent
-import com.github.amezu.todolist.hideKeyboard
-import com.github.amezu.todolist.model.Todo
+import com.github.amezu.todolist.ui.hideKeyboard
+import com.github.amezu.todolist.data.model.Todo
 import kotlinx.android.synthetic.main.todo_form_fragment.*
 import javax.inject.Inject
 

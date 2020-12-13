@@ -1,4 +1,4 @@
-package com.github.amezu.todolist
+package com.github.amezu.todolist.ui
 
 import android.app.Activity
 import android.content.Context
