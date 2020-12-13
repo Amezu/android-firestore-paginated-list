@@ -31,12 +31,12 @@ class TodosRepository {
         }
     }
 
-    fun getNextPage(): Observable<Change<Todo>>? {
+    fun getNextPage(): Observable<List<Change<Todo>>>? {
         val pageSubscription = pagingManager.getNextPage() ?: return null
-        return Observable.create<Change<Todo>> { emitter ->
+        return Observable.create<List<Change<Todo>>> { emitter ->
             pageSubscription.subscribe(object : TodosChangesSubscription.Observer {
                 override fun handleChanges(changes: List<Change<Todo>>) {
-                    changes.forEach { emitter.onNext(it) }
+                    emitter.onNext(changes)
                 }
             })
         }.doOnDispose { pageSubscription.unsubscribe() }

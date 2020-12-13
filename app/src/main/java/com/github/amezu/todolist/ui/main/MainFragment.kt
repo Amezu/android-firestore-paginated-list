@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,6 +38,9 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
+        viewModel.isLoadingNextPage.observe(viewLifecycleOwner, Observer {
+            progressBar.visibility = if (it) View.VISIBLE else View.INVISIBLE
+        })
         initList()
         initFab()
     }
@@ -82,21 +86,25 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
         viewModel.loadNextPage()
             ?.subscribeOn(Schedulers.computation())
             ?.observeOn(AndroidSchedulers.mainThread())
-            ?.doOnNext { change ->
-                when (change.type) {
-                    ChangeType.ADDED -> todos.add(change.item)
-                    ChangeType.MODIFIED -> {
-                        val index = todos.findItemIndex(change)
-                        index?.let { todos.removeAt(it) }
-                        todos.add(index ?: todos.size, change.item)
+            ?.doOnNext {
+                it.forEach { change ->
+                    when (change.type) {
+                        ChangeType.ADDED -> todos.add(change.item)
+                        ChangeType.MODIFIED -> {
+                            val index = todos.findItemIndex(change)
+                            index?.let { todos.removeAt(it) }
+                            todos.add(index ?: todos.size, change.item)
+                        }
+                        ChangeType.REMOVED -> {
+                            val index = todos.findItemIndex(change)
+                            index?.let { todos.removeAt(it) }
+                        }
                     }
-                    ChangeType.REMOVED -> {
-                        val index = todos.findItemIndex(change)
-                        index?.let { todos.removeAt(it) }
-                    }
+                    adapter.notifyDataSetChanged()
                 }
-                adapter.notifyDataSetChanged()
+                viewModel.doOnPageLoaded()
             }?.subscribe()
+            ?: viewModel.doOnPageLoaded()
     }
 
     private fun initFab() {
