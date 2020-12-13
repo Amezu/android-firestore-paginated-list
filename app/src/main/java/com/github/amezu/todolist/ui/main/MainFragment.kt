@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.amezu.todolist.R
 import com.github.amezu.todolist.di.DaggerMainFragmentComponent
 import com.github.amezu.todolist.model.Todo
+import com.github.amezu.todolist.ui.todo_form.TodoFormFragment
 import kotlinx.android.synthetic.main.main_fragment.*
 import javax.inject.Inject
 
@@ -112,7 +113,7 @@ class MainFragment : Fragment() {
     private fun openEditItemView(item: Todo) {
         findNavController().navigate(
             R.id.action_mainFragment_to_todoFormFragment,
-            bundleOf("todo" to item)
+            bundleOf(TodoFormFragment.ARG_TODO to item)
         )
     }
 }

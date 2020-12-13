@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.github.amezu.todolist.R
+import com.github.amezu.todolist.afterTextChanged
 import com.github.amezu.todolist.di.DaggerTodoFormFragmentComponent
 import com.github.amezu.todolist.hideKeyboard
 import com.github.amezu.todolist.model.Todo
@@ -36,12 +37,41 @@ class TodoFormFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val todo = arguments?.get("todo") as Todo?
-        todo?.let { initFormWithTodo(it) }
+        val initialTodo = arguments?.get(ARG_TODO) as Todo?
+        initialTodo?.let { initForm(it) }
+
+        initInputErrorsHandler()
+        clearErrorsOnInputChanges()
+        initResultHandler()
         initSaveButton()
     }
 
-    private fun initFormWithTodo(todo: Todo) {
+    private fun initInputErrorsHandler() {
+        viewModel.formState.observe(viewLifecycleOwner, Observer { formState ->
+            with(formState) {
+                tf_title.error = titleError?.let { getString(it) }
+                tf_description.error = descriptionError?.let { getString(it) }
+                tf_iconUrl.error = iconUrlError?.let { getString(it) }
+            }
+        })
+    }
+
+    private fun initResultHandler() {
+        viewModel.result.observe(viewLifecycleOwner, Observer { error ->
+            error?.let { showError(it) }
+                ?: back()
+        })
+    }
+
+    private fun clearErrorsOnInputChanges() {
+        listOf(tf_title, tf_description, tf_iconUrl).forEach { textField ->
+            textField.editText?.afterTextChanged {
+                textField.error = ""
+            }
+        }
+    }
+
+    private fun initForm(todo: Todo) {
         viewModel.selectedTodo = todo
         tf_title.editText?.setText(todo.title)
         tf_description.editText?.setText(todo.description)
@@ -57,10 +87,6 @@ class TodoFormFragment : Fragment() {
                 tf_iconUrl.editText?.text.toString()
             )
         }
-        viewModel.result.observe(viewLifecycleOwner, Observer { error ->
-            error?.let { showError(it) }
-                ?: back()
-        })
     }
 
     private fun back() {
@@ -69,5 +95,9 @@ class TodoFormFragment : Fragment() {
 
     private fun showError(error: Throwable) {
         Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
+    }
+
+    companion object {
+        const val ARG_TODO = "ARG_TODO"
     }
 }

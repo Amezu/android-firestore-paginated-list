@@ -5,4 +5,8 @@
     <string name="todo_form_icon_hint">Icon URL</string>
     <string name="todo_form_btn">Save</string>
     <string name="delete_todo_title">Delete todo?</string>
+    <string name="invalid_title_empty">Title can not be empty</string>
+    <string name="invalid_title_too_long">Title too long</string>
+    <string name="invalid_description_too_long">Description too long</string>
+    <string name="invalid_url">Not a valid URL</string>
 </resources>
