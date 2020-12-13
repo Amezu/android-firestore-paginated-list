@@ -3,9 +3,9 @@ package com.github.amezu.todolist.ui.list
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.github.amezu.todolist.data.model.Todo
 import com.github.amezu.todolist.data.model.list.Change
 import com.github.amezu.todolist.data.model.list.ChangeType
-import com.github.amezu.todolist.data.model.Todo
 import com.github.amezu.todolist.data.repo.TodosRepository
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -42,8 +42,7 @@ class MainViewModel @Inject constructor(
     private fun MutableList<Todo>.applyChanges(changes: List<Change<Todo>>) {
         changes.forEach { change ->
             when (change.type) {
-                ChangeType.ADDED -> add(change.item)
-                ChangeType.MODIFIED -> {
+                ChangeType.ADDED, ChangeType.MODIFIED -> {
                     val index = findItemIndex(change)
                     index?.let { removeAt(it) }
                     add(index ?: size, change.item)
