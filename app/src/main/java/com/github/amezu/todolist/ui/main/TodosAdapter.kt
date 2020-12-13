@@ -40,6 +40,8 @@ class TodosAdapter constructor(
             item.iconUrl?.takeIf { it.isNotBlank() }?.let { url ->
                 Picasso.get()
                     .load(url)
+                    .placeholder(R.drawable.ic_todo_placeholder)
+                    .error(R.drawable.ic_todo_placeholder)
                     .into(iconView, object : Callback {
                         override fun onSuccess() = Unit
 
