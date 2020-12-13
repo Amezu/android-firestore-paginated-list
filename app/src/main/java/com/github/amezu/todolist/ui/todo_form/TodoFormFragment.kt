@@ -1,5 +1,6 @@
 package com.github.amezu.todolist.ui.todo_form
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,15 +8,18 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.github.amezu.todolist.R
+import com.github.amezu.todolist.di.DaggerTodoFormFragmentComponent
 import com.github.amezu.todolist.hideKeyboard
 import com.github.amezu.todolist.model.Todo
 import kotlinx.android.synthetic.main.todo_form_fragment.*
+import javax.inject.Inject
 
 class TodoFormFragment : Fragment() {
-    private lateinit var viewModel: TodoFormViewModel
+
+    @Inject
+    lateinit var viewModel: TodoFormViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,9 +28,13 @@ class TodoFormFragment : Fragment() {
         return inflater.inflate(R.layout.todo_form_fragment, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(TodoFormViewModel::class.java)
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        DaggerTodoFormFragmentComponent.create().inject(this)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val todo = arguments?.get("todo") as Todo?
         todo?.let { initFormWithTodo(it) }
@@ -34,7 +42,7 @@ class TodoFormFragment : Fragment() {
     }
 
     private fun initFormWithTodo(todo: Todo) {
-        viewModel.todoToEdit = todo
+        viewModel.selectedTodo = todo
         tf_title.editText?.setText(todo.title)
         tf_description.editText?.setText(todo.description)
         tf_iconUrl.editText?.setText(todo.iconUrl)
