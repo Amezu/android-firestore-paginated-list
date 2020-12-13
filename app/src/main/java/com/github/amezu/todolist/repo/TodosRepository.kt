@@ -15,7 +15,7 @@ class TodosRepository {
 
     private fun createPagingManager() = PagingManager(collection.orderBy(Todo::createdDate.name))
 
-    fun save(todo: Todo): Completable {
+    fun create(todo: Todo): Completable {
         return Completable.create { emitter ->
             collection.add(todo)
                 .addOnFailureListener { emitter.onError(it) }
@@ -44,5 +44,13 @@ class TodosRepository {
 
     fun resetPages() {
         pagingManager = createPagingManager()
+    }
+
+    fun update(todo: Todo): Completable {
+        return Completable.create { emitter ->
+            collection.document(todo.id).set(todo)
+                .addOnFailureListener { emitter.onError(it) }
+                .addOnSuccessListener { emitter.onComplete() }
+        }
     }
 }

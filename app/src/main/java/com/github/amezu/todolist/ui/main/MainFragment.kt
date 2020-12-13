@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -46,7 +47,7 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
     }
 
     private fun initList() {
-        adapter = TodosAdapter(todos, this::showDeleteItemDialog)
+        adapter = TodosAdapter(todos, this::openEditItemView, this::showDeleteItemDialog)
         lv_todos.adapter = adapter
         lv_todos.layoutManager = LinearLayoutManager(activity)
         loadNextPage()
@@ -122,8 +123,15 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
         viewModel.delete(id, this::showError)
     }
 
+    private fun openEditItemView(item: Todo) {
+        findNavController().navigate(
+            R.id.action_mainFragment_to_addTodoFragment,
+            bundleOf("todo" to item)
+        )
+    }
+
     private fun showError(throwable: Throwable?) {
-        Toast.makeText(context, throwable.toString(), Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, throwable?.message, Toast.LENGTH_SHORT).show()
     }
 
     private fun List<Todo>.findItemIndex(change: Change<Todo>): Int? {

@@ -4,10 +4,12 @@ import androidx.lifecycle.ViewModel
 import com.github.amezu.todolist.model.Todo
 import com.github.amezu.todolist.repo.TodosRepository
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 
-class AddTodoViewModel : ViewModel() {
+class TodoFormViewModel : ViewModel() {
     private val todoRepository = TodosRepository()
-    private val compositeDisposable = CompositeDisposable()
+    private val disposables = CompositeDisposable()
+    var todoToEdit: Todo? = null
 
     fun doOnSaveClick(
         title: String,
@@ -15,13 +17,15 @@ class AddTodoViewModel : ViewModel() {
         successHandler: () -> Unit,
         failureHandler: (Throwable) -> Unit
     ) {
-        val disposable = todoRepository.save(Todo(title, description))
-            .subscribe(successHandler, failureHandler)
-        compositeDisposable.add(disposable)
+        todoRepository.run {
+            todoToEdit?.let { update(it.copy(title = title, description = description)) }
+                ?: create(Todo(title, description))
+        }.subscribe(successHandler, failureHandler)
+            .addTo(disposables)
     }
 
     override fun onCleared() {
-        compositeDisposable.dispose()
+        disposables.dispose()
         super.onCleared()
     }
 }

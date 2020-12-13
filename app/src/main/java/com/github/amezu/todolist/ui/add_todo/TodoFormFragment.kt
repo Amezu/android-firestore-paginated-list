@@ -10,10 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.github.amezu.todolist.R
 import com.github.amezu.todolist.hideKeyboard
+import com.github.amezu.todolist.model.Todo
 import kotlinx.android.synthetic.main.add_todo_fragment.*
 
-class AddTodoFragment : Fragment() {
-    private lateinit var viewModel: AddTodoViewModel
+class TodoFormFragment : Fragment() {
+    private lateinit var viewModel: TodoFormViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,9 +25,17 @@ class AddTodoFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(AddTodoViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(TodoFormViewModel::class.java)
 
+        val todo = arguments?.get("todo") as Todo?
+        todo?.let { initFormWithTodo(it) }
         initSaveButton()
+    }
+
+    private fun initFormWithTodo(todo: Todo) {
+        viewModel.todoToEdit = todo
+        tf_title.editText?.setText(todo.title)
+        tf_description.editText?.setText(todo.description)
     }
 
     private fun initSaveButton() {

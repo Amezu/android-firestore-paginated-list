@@ -10,6 +10,7 @@ import com.github.amezu.todolist.model.Todo
 
 class TodosAdapter constructor(
     private val todos: List<Todo>,
+    private val clickListener: (Todo) -> Unit,
     private val longClickListener: (Todo) -> Unit
 ) : RecyclerView.Adapter<TodosAdapter.ViewHolder>() {
 
@@ -32,6 +33,7 @@ class TodosAdapter constructor(
         internal fun bind(item: Todo) {
             titleView.text = item.title
             descriptionView.text = item.description
+            itemView.setOnClickListener { clickListener(item) }
             itemView.setOnLongClickListener { longClickListener(item); true }
         }
     }

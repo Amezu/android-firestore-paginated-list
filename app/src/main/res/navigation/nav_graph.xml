@@ -18,12 +18,17 @@
 
     <fragment
         android:id="@+id/addTodoFragment"
-        android:name="com.github.amezu.todolist.ui.add_todo.AddTodoFragment"
+        android:name="com.github.amezu.todolist.ui.add_todo.TodoFormFragment"
         android:label="add_todo_fragment"
         tools:layout="@layout/add_todo_fragment">
 
         <action
             android:id="@+id/action_addTodoFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+
+        <argument
+            android:name="todo"
+            android:defaultValue="@null"
+            app:argType="com.github.amezu.todolist.model.Todo" />
     </fragment>
 </navigation>
