@@ -5,17 +5,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.github.amezu.todolist.R
 import com.github.amezu.todolist.model.Todo
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
-class TodosAdapter constructor(
-    private val todos: List<Todo>,
+class TodosAdapter(
     private val clickListener: (Todo) -> Unit,
     private val longClickListener: (Todo) -> Unit
 ) : RecyclerView.Adapter<TodosAdapter.ViewHolder>() {
+    private val content = mutableListOf<Todo>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context)
@@ -24,10 +25,17 @@ class TodosAdapter constructor(
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.bind(todos[position])
+        viewHolder.bind(content.elementAt(position))
     }
 
-    override fun getItemCount() = todos.size
+    override fun getItemCount() = content.count()
+
+    fun updateItems(newContent: Iterable<Todo>) {
+        val diff = DiffUtil.calculateDiff(DiffCallback(content, newContent))
+        content.clear()
+        content.addAll(newContent)
+        diff.dispatchUpdatesTo(this)
+    }
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private val titleView: TextView = v.findViewById(R.id.tv_title)
@@ -51,6 +59,27 @@ class TodosAdapter constructor(
             } ?: iconView.setImageResource(R.drawable.ic_todo_placeholder)
             itemView.setOnClickListener { clickListener(item) }
             itemView.setOnLongClickListener { longClickListener(item); true }
+        }
+    }
+
+    class DiffCallback(
+        private val oldContent: Iterable<Todo>,
+        private val newContent: Iterable<Todo>
+    ) : DiffUtil.Callback() {
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldContent.elementAt(oldItemPosition).id == newContent.elementAt(newItemPosition).id
+        }
+
+        override fun getOldListSize(): Int {
+            return oldContent.count()
+        }
+
+        override fun getNewListSize(): Int {
+            return newContent.count()
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldContent.elementAt(oldItemPosition) == newContent.elementAt(newItemPosition)
         }
     }
 }

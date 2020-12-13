@@ -28,7 +28,6 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
     lateinit var viewModel: MainViewModel
 
     private lateinit var adapter: TodosAdapter
-    private val todos = mutableListOf<Todo>()
     private var isScrolling = false
 
     override fun onAttach(context: Context) {
@@ -54,9 +53,10 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
     }
 
     private fun initList() {
-        adapter = TodosAdapter(todos, this::openEditItemView, this::showDeleteItemDialog)
+        adapter = TodosAdapter(this::openEditItemView, this::showDeleteItemDialog)
         lv_todos.adapter = adapter
         lv_todos.layoutManager = LinearLayoutManager(activity)
+        adapter.updateItems(viewModel.todos)
         loadNextPage()
         setupLoadingNextPage()
     }
@@ -97,19 +97,19 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
             ?.doOnNext {
                 it.forEach { change ->
                     when (change.type) {
-                        ChangeType.ADDED -> todos.add(change.item)
+                        ChangeType.ADDED -> viewModel.todos.add(change.item)
                         ChangeType.MODIFIED -> {
-                            val index = todos.findItemIndex(change)
-                            index?.let { todos.removeAt(it) }
-                            todos.add(index ?: todos.size, change.item)
+                            val index = viewModel.todos.findItemIndex(change)
+                            index?.let { viewModel.todos.removeAt(it) }
+                            viewModel.todos.add(index ?: viewModel.todos.size, change.item)
                         }
                         ChangeType.REMOVED -> {
-                            val index = todos.findItemIndex(change)
-                            index?.let { todos.removeAt(it) }
+                            val index = viewModel.todos.findItemIndex(change)
+                            index?.let { viewModel.todos.removeAt(it) }
                         }
                     }
-                    adapter.notifyDataSetChanged()
                 }
+                adapter.updateItems(viewModel.todos)
                 viewModel.doOnPageLoaded()
             }?.subscribe()
             ?: viewModel.doOnPageLoaded()

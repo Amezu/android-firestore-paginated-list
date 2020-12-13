@@ -18,6 +18,7 @@ class MainViewModel @Inject constructor(
 
     private val _isLoadingNextPage = MutableLiveData<Boolean>()
     val isLoadingNextPage: LiveData<Boolean> = _isLoadingNextPage
+    val todos = mutableListOf<Todo>()
 
     fun loadNextPage(): Observable<List<Change<Todo>>>? {
         _isLoadingNextPage.value = true
@@ -40,6 +41,8 @@ class MainViewModel @Inject constructor(
     override fun onCleared() {
         disposables.dispose()
         todosRepository.resetPages()
+        todos.clear()
+        _isLoadingNextPage.value = false
         super.onCleared()
     }
 }
