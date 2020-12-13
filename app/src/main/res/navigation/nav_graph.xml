@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/todoFormFragment"
-        android:name="com.github.amezu.todolist.ui.add_todo.TodoFormFragment"
+        android:name="com.github.amezu.todolist.ui.todo_form.TodoFormFragment"
         android:label="todo_form_fragment"
         tools:layout="@layout/todo_form_fragment">
     </fragment>

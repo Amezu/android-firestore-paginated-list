@@ -7,7 +7,7 @@
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".ui.add_todo.TodoFormFragment">
+    tools:context=".ui.todo_form.TodoFormFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tf_title"

@@ -1,4 +1,4 @@
-package com.github.amezu.todolist.ui.add_todo
+package com.github.amezu.todolist.ui.todo_form
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package com.github.amezu.todolist.ui.add_todo
+package com.github.amezu.todolist.ui.todo_form
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,16 +12,16 @@ class TodoFormViewModel : ViewModel() {
     private val todoRepository = FirebaseTodosRepository()
     private val disposables = CompositeDisposable()
     var todoToEdit: Todo? = null
-    private val _operationResult = MutableLiveData<Throwable?>()
-    val result: LiveData<Throwable?> = _operationResult
+    private val _result = MutableLiveData<Throwable?>()
+    val result: LiveData<Throwable?> = _result
 
     fun doOnSaveClick(title: String, description: String) {
         todoRepository.run {
             todoToEdit?.let { update(it.copy(title = title, description = description)) }
                 ?: create(Todo(title, description))
         }.subscribe(
-            { _operationResult.value = null },
-            { _operationResult.value = it }
+            { _result.value = null },
+            { _result.value = it }
         ).addTo(disposables)
     }
 
