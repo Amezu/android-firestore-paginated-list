@@ -28,7 +28,7 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
     lateinit var viewModel: MainViewModel
 
     private lateinit var adapter: TodosAdapter
-    private val todos = LinkedHashSet<Todo>()
+    private val todos = mutableListOf<Todo>()
     private var isScrolling = false
 
     override fun onAttach(context: Context) {
@@ -98,14 +98,20 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
                 it.forEach { change ->
                     when (change.type) {
                         ChangeType.ADDED -> todos.add(change.item)
-                        ChangeType.MODIFIED -> todos.add(change.item)
-                        ChangeType.REMOVED -> todos.remove(change.item)
+                        ChangeType.MODIFIED -> {
+                            val index = todos.findItemIndex(change)
+                            index?.let { todos.removeAt(it) }
+                            todos.add(index ?: todos.size, change.item)
+                        }
+                        ChangeType.REMOVED -> {
+                            val index = todos.findItemIndex(change)
+                            index?.let { todos.removeAt(it) }
+                        }
                     }
                     adapter.notifyDataSetChanged()
                 }
                 viewModel.doOnPageLoaded()
-            }?.doOnError(Throwable::printStackTrace)
-            ?.subscribe()
+            }?.subscribe()
             ?: viewModel.doOnPageLoaded()
     }
 
@@ -135,7 +141,7 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
         Toast.makeText(context, throwable?.message, Toast.LENGTH_SHORT).show()
     }
 
-    private fun Collection<Todo>.findItemIndex(change: Change<Todo>): Int? {
+    private fun List<Todo>.findItemIndex(change: Change<Todo>): Int? {
         return indexOfFirst { it.id == change.item.id }.takeUnless { it < 0 }
     }
 }

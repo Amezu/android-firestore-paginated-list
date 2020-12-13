@@ -12,7 +12,7 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
 class TodosAdapter constructor(
-    private val todos: Iterable<Todo>,
+    private val todos: List<Todo>,
     private val clickListener: (Todo) -> Unit,
     private val longClickListener: (Todo) -> Unit
 ) : RecyclerView.Adapter<TodosAdapter.ViewHolder>() {
@@ -24,10 +24,10 @@ class TodosAdapter constructor(
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.bind(todos.elementAt(position))
+        viewHolder.bind(todos[position])
     }
 
-    override fun getItemCount() = todos.count()
+    override fun getItemCount() = todos.size
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private val titleView: TextView = v.findViewById(R.id.tv_title)
