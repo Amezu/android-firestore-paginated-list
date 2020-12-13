@@ -42,8 +42,8 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
         return inflater.inflate(R.layout.main_fragment, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         viewModel.isLoadingNextPage.observe(viewLifecycleOwner, Observer {
             progressBar.visibility = if (it) View.VISIBLE else View.INVISIBLE
