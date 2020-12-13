@@ -28,6 +28,6 @@ class TodosRepository {
     }
 
     fun getNextPage(): TodosChangesLiveData? {
-        return pagingManager.getNextPage()
+        return pagingManager.getNextPage()?.let { TodosChangesLiveData(it) }
     }
 }

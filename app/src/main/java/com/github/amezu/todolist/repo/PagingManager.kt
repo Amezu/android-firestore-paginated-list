@@ -11,21 +11,36 @@ internal class PagingManager internal constructor(
     private var lastLoadedItem: DocumentSnapshot? = null
     private var isLastItemReached = false
 
-    internal fun updatePagingParams(pageItemsCount: Int, lastLoadedItem: DocumentSnapshot?) {
-        if (pageItemsCount < pageSize) {
-            this.isLastItemReached = true
-        } else {
+    private var lastSubscription: TodosChangesSubscription? = null
+    private var previousLastPageItemsCount = 0
+
+    internal fun updatePagingParams(
+        pageItemsCount: Int,
+        lastLoadedItem: DocumentSnapshot?,
+        subscription: TodosChangesSubscription
+    ) {
+        if (subscription == lastSubscription) {
             this.lastLoadedItem = lastLoadedItem
+            updateIsLastItemReached(pageItemsCount)
+            previousLastPageItemsCount = pageItemsCount
         }
     }
 
-    fun getNextPage(): TodosChangesLiveData? {
+    private fun updateIsLastItemReached(newLastPageItemsCount: Int) {
+        if (newLastPageItemsCount < pageSize) {
+            isLastItemReached = true
+        } else if (previousLastPageItemsCount < newLastPageItemsCount) {
+            isLastItemReached = false
+        }
+    }
+
+    fun getNextPage(): TodosChangesSubscription? {
         if (isLastItemReached) {
             return null
         }
 
         lastLoadedItem?.let { query = query.startAfter(it) }
 
-        return TodosChangesLiveData(TodosChangesSubscription(query, this))
+        return TodosChangesSubscription(query, this).also { lastSubscription = it }
     }
 }

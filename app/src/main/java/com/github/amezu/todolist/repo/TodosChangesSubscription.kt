@@ -46,7 +46,7 @@ internal class TodosChangesSubscription(
         }
 
         observer.handleChanges(changes)
-        pagingManager.updatePagingParams(queryItemsCount, lastItem)
+        pagingManager.updatePagingParams(queryItemsCount, lastItem, this)
     }
 
     interface Observer {
