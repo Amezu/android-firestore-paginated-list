@@ -9,6 +9,7 @@ import com.github.amezu.todolist.data.model.list.ChangeType
 import com.github.amezu.todolist.data.repo.TodosRepository
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class MainViewModel @Inject constructor(
@@ -34,6 +35,7 @@ class MainViewModel @Inject constructor(
                 _todosLiveData.value = _todos
                 _isLoadingNextPage.value = false
             }.doOnError { _errors.value = it }
+                .subscribeOn(Schedulers.io())
                 .subscribe()
                 .addTo(disposables)
         }
@@ -62,6 +64,7 @@ class MainViewModel @Inject constructor(
     fun doOnDeleteAccepted(id: String) {
         todosRepository.delete(id)
             .doOnError { _errors.value = it }
+            .subscribeOn(Schedulers.io())
             .subscribe()
             .addTo(disposables)
     }

@@ -10,6 +10,7 @@ import com.github.amezu.todolist.data.model.form.TodoFormState
 import com.github.amezu.todolist.data.repo.TodosRepository
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class TodoFormViewModel @Inject constructor(
@@ -32,7 +33,8 @@ class TodoFormViewModel @Inject constructor(
         todosRepository.run {
             selectedTodo?.let { update(it.copy(title, description, iconUrl)) }
                 ?: create(Todo(title, description, iconUrl))
-        }.subscribe(
+        }.subscribeOn(Schedulers.io())
+            .subscribe(
             { _result.value = null },
             { _result.value = it }
         ).addTo(disposables)
