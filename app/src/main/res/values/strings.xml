@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Todo List</string>
-    <string name="todo_title_hint">Title</string>
-    <string name="todo_description_hint">Description</string>
+    <string name="todo_form_title_hint">Title</string>
+    <string name="todo_form_description_hint">Description</string>
+    <string name="todo_form_icon_hint">Icon URL</string>
     <string name="todo_form_btn">Save</string>
 </resources>
