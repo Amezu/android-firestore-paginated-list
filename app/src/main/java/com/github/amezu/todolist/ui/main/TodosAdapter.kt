@@ -9,7 +9,7 @@ import com.github.amezu.todolist.R
 import com.github.amezu.todolist.model.Todo
 
 class TodosAdapter constructor(
-    private val todos: List<Todo>,
+    private val todos: Iterable<Todo>,
     private val clickListener: (Todo) -> Unit,
     private val longClickListener: (Todo) -> Unit
 ) : RecyclerView.Adapter<TodosAdapter.ViewHolder>() {
@@ -21,10 +21,10 @@ class TodosAdapter constructor(
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.bind(todos[position])
+        viewHolder.bind(todos.elementAt(position))
     }
 
-    override fun getItemCount() = todos.size
+    override fun getItemCount() = todos.count()
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private val titleView: TextView = v.findViewById(R.id.tv_title)
