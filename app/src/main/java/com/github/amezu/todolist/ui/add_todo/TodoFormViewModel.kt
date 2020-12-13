@@ -4,12 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.amezu.todolist.model.Todo
-import com.github.amezu.todolist.repo.TodosRepository
+import com.github.amezu.todolist.repo.FirebaseTodosRepository
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 
 class TodoFormViewModel : ViewModel() {
-    private val todoRepository = TodosRepository()
+    private val todoRepository = FirebaseTodosRepository()
     private val disposables = CompositeDisposable()
     var todoToEdit: Todo? = null
     private val _operationResult = MutableLiveData<Throwable?>()

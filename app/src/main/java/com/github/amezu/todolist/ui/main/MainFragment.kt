@@ -1,5 +1,6 @@
 package com.github.amezu.todolist.ui.main
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,19 +15,31 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.amezu.todolist.R
+import com.github.amezu.todolist.di.DaggerMainFragmentComponent
 import com.github.amezu.todolist.model.Change
 import com.github.amezu.todolist.model.ChangeType
 import com.github.amezu.todolist.model.Todo
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.main_fragment.*
+import javax.inject.Inject
 
 
 class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
-    private lateinit var viewModel: MainViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+    }
+
     private lateinit var adapter: TodosAdapter
     private val todos = mutableListOf<Todo>()
     private var isScrolling = false
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        DaggerMainFragmentComponent.create().inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +50,6 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         viewModel.isLoadingNextPage.observe(viewLifecycleOwner, Observer {
             progressBar.visibility = if (it) View.VISIBLE else View.INVISIBLE

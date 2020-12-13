@@ -9,9 +9,11 @@ import com.github.amezu.todolist.repo.TodosRepository
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
-    private val todoRepository = TodosRepository()
+class MainViewModel @Inject constructor(
+    private val todosRepository: TodosRepository
+) : ViewModel() {
     private val disposables = CompositeDisposable()
 
     private val _isLoadingNextPage = MutableLiveData<Boolean>()
@@ -19,9 +21,9 @@ class MainViewModel : ViewModel() {
 
     fun loadNextPage(): Observable<List<Change<Todo>>>? {
         _isLoadingNextPage.value = true
-        return todoRepository.getNextPage()
+        return todosRepository.getNextPage()
             ?.doOnError(Throwable::printStackTrace)
-            ?.doOnSubscribe { it.addTo(disposables) }
+            ?.doOnSubscribe { disposables.add(it) }
     }
 
     fun doOnPageLoaded() {
@@ -29,7 +31,7 @@ class MainViewModel : ViewModel() {
     }
 
     fun delete(id: String, errorHandler: (Throwable) -> Unit) {
-        todoRepository.delete(id)
+        todosRepository.delete(id)
             .doOnError(errorHandler)
             .subscribe()
             .addTo(disposables)
@@ -37,7 +39,7 @@ class MainViewModel : ViewModel() {
 
     override fun onCleared() {
         disposables.dispose()
-        todoRepository.resetPages()
+        todosRepository.resetPages()
         super.onCleared()
     }
 }
