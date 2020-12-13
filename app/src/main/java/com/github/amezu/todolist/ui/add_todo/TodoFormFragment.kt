@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.github.amezu.todolist.R
@@ -43,18 +44,20 @@ class TodoFormFragment : Fragment() {
             hideKeyboard()
             viewModel.doOnSaveClick(
                 tf_title.editText?.text.toString(),
-                tf_description.editText?.text.toString(),
-                this::back,
-                this::showError
+                tf_description.editText?.text.toString()
             )
         }
+        viewModel.result.observe(viewLifecycleOwner, Observer { error ->
+            error?.let { showError(it) }
+                ?: back()
+        })
     }
 
     private fun back() {
         findNavController().popBackStack()
     }
 
-    private fun showError(throwable: Throwable) {
-        Toast.makeText(context, throwable.toString(), Toast.LENGTH_SHORT).show()
+    private fun showError(error: Throwable) {
+        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show()
     }
 }
