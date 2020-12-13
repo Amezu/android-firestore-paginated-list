@@ -93,10 +93,6 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
                     ChangeType.REMOVED -> {
                         val index = todos.findItemIndex(change)
                         index?.let { todos.removeAt(it) }
-                        todos.add(
-                            index ?: todos.size,
-                            Todo(requireContext().getString(R.string.todos_item_deleted))
-                        )
                     }
                 }
                 adapter.notifyDataSetChanged()
