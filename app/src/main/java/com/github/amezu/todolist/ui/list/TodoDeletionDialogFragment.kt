@@ -10,7 +10,7 @@ import com.github.amezu.todolist.R
 import com.github.amezu.todolist.di.DaggerMainFragmentComponent
 import javax.inject.Inject
 
-class DeleteTodoDialogFragment : DialogFragment() {
+class TodoDeletionDialogFragment : DialogFragment() {
 
     @Inject
     lateinit var sharedViewModel: MainViewModel
@@ -35,8 +35,8 @@ class DeleteTodoDialogFragment : DialogFragment() {
     companion object {
         private const val ARG_ID = "ID"
 
-        fun newInstance(id: String): DeleteTodoDialogFragment {
-            return DeleteTodoDialogFragment()
+        fun newInstance(id: String): TodoDeletionDialogFragment {
+            return TodoDeletionDialogFragment()
                 .apply { arguments = bundleOf(ARG_ID to id) }
         }
     }

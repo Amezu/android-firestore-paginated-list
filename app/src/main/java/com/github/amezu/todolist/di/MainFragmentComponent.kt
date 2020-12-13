@@ -1,6 +1,6 @@
 package com.github.amezu.todolist.di
 
-import com.github.amezu.todolist.ui.list.DeleteTodoDialogFragment
+import com.github.amezu.todolist.ui.list.TodoDeletionDialogFragment
 import com.github.amezu.todolist.ui.list.MainFragment
 import dagger.Component
 import javax.inject.Singleton
@@ -15,5 +15,5 @@ import javax.inject.Singleton
 interface MainFragmentComponent {
 
     fun inject(fragment: MainFragment)
-    fun inject(fragment: DeleteTodoDialogFragment)
+    fun inject(fragment: TodoDeletionDialogFragment)
 }

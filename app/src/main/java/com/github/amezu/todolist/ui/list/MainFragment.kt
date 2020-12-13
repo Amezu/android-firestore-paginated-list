@@ -106,7 +106,7 @@ class MainFragment : Fragment() {
     }
 
     private fun showDeleteItemDialog(item: Todo) {
-        DeleteTodoDialogFragment.newInstance(item.id)
+        TodoDeletionDialogFragment.newInstance(item.id)
             .show(childFragmentManager, "delete")
     }
 
