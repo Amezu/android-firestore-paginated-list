@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,13 +23,9 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.main_fragment.*
 import javax.inject.Inject
 
-
 class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-    private val viewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
-    }
+    lateinit var viewModel: MainViewModel
 
     private lateinit var adapter: TodosAdapter
     private val todos = LinkedHashSet<Todo>()
