@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.amezu.todolist.model.Change
+import com.github.amezu.todolist.model.ChangeType
 import com.github.amezu.todolist.model.Todo
 import com.github.amezu.todolist.repo.TodosRepository
-import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import javax.inject.Inject
@@ -18,17 +18,43 @@ class MainViewModel @Inject constructor(
 
     private val _isLoadingNextPage = MutableLiveData<Boolean>()
     val isLoadingNextPage: LiveData<Boolean> = _isLoadingNextPage
-    val todos = mutableListOf<Todo>()
 
-    fun loadNextPage(): Observable<List<Change<Todo>>>? {
-        _isLoadingNextPage.value = true
-        return todosRepository.getNextPage()
-            ?.doOnError(Throwable::printStackTrace)
-            ?.doOnSubscribe { disposables.add(it) }
+    private val _todos = mutableListOf<Todo>()
+    private val _todosLiveData = MutableLiveData<List<Todo>>()
+    val todos: LiveData<List<Todo>> = _todosLiveData
+
+    fun loadNextPage() {
+        todosRepository.getNextPage()?.let {
+            _isLoadingNextPage.value = true
+            it.doOnError(Throwable::printStackTrace)
+                .doOnNext {
+                    _todos.applyChanges(it)
+                    _todosLiveData.value = _todos
+                    _isLoadingNextPage.value = false
+                }.subscribe()
+                .addTo(disposables)
+        }
     }
 
-    fun doOnPageLoaded() {
-        _isLoadingNextPage.value = false
+    private fun MutableList<Todo>.applyChanges(changes: List<Change<Todo>>) {
+        changes.forEach { change ->
+            when (change.type) {
+                ChangeType.ADDED -> add(change.item)
+                ChangeType.MODIFIED -> {
+                    val index = findItemIndex(change)
+                    index?.let { removeAt(it) }
+                    add(index ?: size, change.item)
+                }
+                ChangeType.REMOVED -> {
+                    val index = findItemIndex(change)
+                    index?.let { removeAt(it) }
+                }
+            }
+        }
+    }
+
+    private fun List<Todo>.findItemIndex(change: Change<Todo>): Int? {
+        return indexOfFirst { it.id == change.item.id }.takeUnless { it < 0 }
     }
 
     fun delete(id: String, errorHandler: (Throwable) -> Unit) {
@@ -41,7 +67,7 @@ class MainViewModel @Inject constructor(
     override fun onCleared() {
         disposables.dispose()
         todosRepository.resetPages()
-        todos.clear()
+        _todos.clear()
         _isLoadingNextPage.value = false
         super.onCleared()
     }
