@@ -8,7 +8,6 @@ import android.widget.AbsListView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +15,8 @@ import com.github.amezu.todolist.R
 import com.github.amezu.todolist.model.Change
 import com.github.amezu.todolist.model.ChangeType
 import com.github.amezu.todolist.model.Todo
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.main_fragment.*
 
 
@@ -78,8 +79,10 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
     }
 
     private fun loadNextPage() {
-        viewModel.loadNextPage()?.let {
-            it.observe(viewLifecycleOwner) { change ->
+        viewModel.loadNextPage()
+            ?.subscribeOn(Schedulers.computation())
+            ?.observeOn(AndroidSchedulers.mainThread())
+            ?.doOnNext { change ->
                 when (change.type) {
                     ChangeType.ADDED -> todos.add(change.item)
                     ChangeType.MODIFIED -> {
@@ -97,8 +100,7 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
                     }
                 }
                 adapter.notifyDataSetChanged()
-            }
-        }
+            }?.subscribe()
     }
 
     private fun initFab() {
