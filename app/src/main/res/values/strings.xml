@@ -4,4 +4,5 @@
     <string name="todo_form_description_hint">Description</string>
     <string name="todo_form_icon_hint">Icon URL</string>
     <string name="todo_form_btn">Save</string>
+    <string name="delete_todo_title">Delete todo?</string>
 </resources>

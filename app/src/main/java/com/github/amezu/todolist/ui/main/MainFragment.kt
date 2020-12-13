@@ -19,7 +19,8 @@ import com.github.amezu.todolist.model.Todo
 import kotlinx.android.synthetic.main.main_fragment.*
 import javax.inject.Inject
 
-class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
+class MainFragment : Fragment() {
+
     @Inject
     lateinit var viewModel: MainViewModel
 
@@ -41,9 +42,16 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initErrorsHandling()
         initProgressBar()
         initList()
         initFab()
+    }
+
+    private fun initErrorsHandling() {
+        viewModel.error.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(context, it?.message, Toast.LENGTH_SHORT).show()
+        })
     }
 
     private fun initProgressBar() {
@@ -97,12 +105,8 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
     }
 
     private fun showDeleteItemDialog(item: Todo) {
-        DeleteTodoDialogFragment.newInstance(this, item.id)
-            .show(parentFragmentManager, "dialog")
-    }
-
-    override fun onDeleteAccepted(id: String) {
-        viewModel.delete(id, this::showError)
+        DeleteTodoDialogFragment.newInstance(item.id)
+            .show(childFragmentManager, "delete")
     }
 
     private fun openEditItemView(item: Todo) {
@@ -110,9 +114,5 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
             R.id.action_mainFragment_to_todoFormFragment,
             bundleOf("todo" to item)
         )
-    }
-
-    private fun showError(throwable: Throwable?) {
-        Toast.makeText(context, throwable?.message, Toast.LENGTH_SHORT).show()
     }
 }

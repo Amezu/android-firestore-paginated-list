@@ -1,45 +1,43 @@
 package com.github.amezu.todolist.ui.main
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
+import com.github.amezu.todolist.R
+import com.github.amezu.todolist.di.DaggerMainFragmentComponent
+import javax.inject.Inject
 
 class DeleteTodoDialogFragment : DialogFragment() {
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return activity?.let {
-            AlertDialog.Builder(it)
-                .setMessage("Delete todo?")
-                .setPositiveButton(android.R.string.ok) { dialog, _ ->
-                    val id = requireArguments().getString(ARG_ID)!!
-                    (targetFragment as Callback).onDeleteAccepted(id)
-                    dialog.dismiss()
-                }
-                .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                    dialog.cancel()
-                }.create()
-        } ?: throw IllegalStateException("Activity cannot be null")
+    @Inject
+    lateinit var sharedViewModel: MainViewModel
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        DaggerMainFragmentComponent.create().inject(this)
     }
 
-    interface Callback {
-        fun onDeleteAccepted(id: String)
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return AlertDialog.Builder(requireActivity())
+            .setMessage(getString(R.string.delete_todo_title))
+            .setPositiveButton(android.R.string.ok) { dialog, _ ->
+                val id = requireArguments().getString(ARG_ID)!!
+                sharedViewModel.doOnDeleteAccepted(id)
+                dialog.dismiss()
+            }.setNegativeButton(android.R.string.cancel) { dialog, _ ->
+                dialog.cancel()
+            }.create()
     }
 
     companion object {
-        const val ARG_ID = "ID"
+        private const val ARG_ID = "ID"
 
-        fun <T> newInstance(
-            callbackFragment: T,
-            id: String
-        ): DeleteTodoDialogFragment
-                where T : Callback, T : Fragment {
-            return DeleteTodoDialogFragment().apply {
-                setTargetFragment(callbackFragment, 0)
-                arguments = bundleOf(ARG_ID to id)
-            }
+        fun newInstance(id: String): DeleteTodoDialogFragment {
+            return DeleteTodoDialogFragment()
+                .apply { arguments = bundleOf(ARG_ID to id) }
         }
     }
 }

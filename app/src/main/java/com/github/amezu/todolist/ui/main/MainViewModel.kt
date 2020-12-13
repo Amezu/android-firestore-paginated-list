@@ -23,15 +23,18 @@ class MainViewModel @Inject constructor(
     private val _todosLiveData = MutableLiveData<List<Todo>>()
     val todos: LiveData<List<Todo>> = _todosLiveData
 
+    private val _errors = MutableLiveData<Throwable>()
+    val error: LiveData<Throwable> = _errors
+
     fun loadNextPage() {
         todosRepository.getNextPage()?.let {
             _isLoadingNextPage.value = true
-            it.doOnError(Throwable::printStackTrace)
-                .doOnNext {
-                    _todos.applyChanges(it)
-                    _todosLiveData.value = _todos
-                    _isLoadingNextPage.value = false
-                }.subscribe()
+            it.doOnNext {
+                _todos.applyChanges(it)
+                _todosLiveData.value = _todos
+                _isLoadingNextPage.value = false
+            }.doOnError { _errors.value = it }
+                .subscribe()
                 .addTo(disposables)
         }
     }
@@ -57,9 +60,9 @@ class MainViewModel @Inject constructor(
         return indexOfFirst { it.id == change.item.id }.takeUnless { it < 0 }
     }
 
-    fun delete(id: String, errorHandler: (Throwable) -> Unit) {
+    fun doOnDeleteAccepted(id: String) {
         todosRepository.delete(id)
-            .doOnError(errorHandler)
+            .doOnError { _errors.value = it }
             .subscribe()
             .addTo(disposables)
     }
