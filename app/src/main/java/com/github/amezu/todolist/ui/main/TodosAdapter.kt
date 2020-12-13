@@ -40,8 +40,7 @@ class TodosAdapter constructor(
             item.iconUrl?.takeIf { it.isNotBlank() }?.let { url ->
                 Picasso.get()
                     .load(url)
-                    .placeholder(R.drawable.ic_todo_placeholder)
-                    .error(R.drawable.ic_todo_placeholder)
+                    .noPlaceholder()
                     .into(iconView, object : Callback {
                         override fun onSuccess() = Unit
 
@@ -49,7 +48,7 @@ class TodosAdapter constructor(
                             e?.printStackTrace()
                         }
                     })
-            }
+            } ?: iconView.setImageResource(R.drawable.ic_todo_placeholder)
             itemView.setOnClickListener { clickListener(item) }
             itemView.setOnLongClickListener { longClickListener(item); true }
         }
