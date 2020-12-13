@@ -15,10 +15,10 @@ class TodoFormViewModel : ViewModel() {
     private val _result = MutableLiveData<Throwable?>()
     val result: LiveData<Throwable?> = _result
 
-    fun doOnSaveClick(title: String, description: String) {
+    fun doOnSaveClick(title: String, description: String, iconUrl: String) {
         todoRepository.run {
-            todoToEdit?.let { update(it.copy(title = title, description = description)) }
-                ?: create(Todo(title, description))
+            todoToEdit?.let { update(it.copy(title, description, iconUrl)) }
+                ?: create(Todo(title, description, iconUrl))
         }.subscribe(
             { _result.value = null },
             { _result.value = it }

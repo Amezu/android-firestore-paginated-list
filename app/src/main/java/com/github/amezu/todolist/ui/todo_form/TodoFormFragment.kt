@@ -37,6 +37,7 @@ class TodoFormFragment : Fragment() {
         viewModel.todoToEdit = todo
         tf_title.editText?.setText(todo.title)
         tf_description.editText?.setText(todo.description)
+        tf_iconUrl.editText?.setText(todo.iconUrl)
     }
 
     private fun initSaveButton() {
@@ -44,7 +45,8 @@ class TodoFormFragment : Fragment() {
             hideKeyboard()
             viewModel.doOnSaveClick(
                 tf_title.editText?.text.toString(),
-                tf_description.editText?.text.toString()
+                tf_description.editText?.text.toString(),
+                tf_iconUrl.editText?.text.toString()
             )
         }
         viewModel.result.observe(viewLifecycleOwner, Observer { error ->
