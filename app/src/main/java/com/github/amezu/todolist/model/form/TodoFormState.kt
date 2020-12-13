@@ -1,4 +1,4 @@
-package com.github.amezu.todolist.model
+package com.github.amezu.todolist.model.form
 
 class TodoFormState(
     val titleError: Int? = null,

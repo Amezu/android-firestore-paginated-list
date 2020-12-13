@@ -1,4 +1,4 @@
-package com.github.amezu.todolist.ui.main
+package com.github.amezu.todolist.ui.list
 
 import android.view.LayoutInflater
 import android.view.View

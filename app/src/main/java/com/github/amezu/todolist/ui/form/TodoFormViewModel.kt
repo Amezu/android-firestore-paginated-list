@@ -1,4 +1,4 @@
-package com.github.amezu.todolist.ui.todo_form
+package com.github.amezu.todolist.ui.form
 
 import android.util.Patterns
 import androidx.lifecycle.LiveData
@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.amezu.todolist.R
 import com.github.amezu.todolist.model.Todo
-import com.github.amezu.todolist.model.TodoFormState
+import com.github.amezu.todolist.model.form.TodoFormState
 import com.github.amezu.todolist.repo.TodosRepository
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo

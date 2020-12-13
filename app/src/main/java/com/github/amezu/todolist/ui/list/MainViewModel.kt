@@ -1,10 +1,10 @@
-package com.github.amezu.todolist.ui.main
+package com.github.amezu.todolist.ui.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.github.amezu.todolist.model.Change
-import com.github.amezu.todolist.model.ChangeType
+import com.github.amezu.todolist.model.list.Change
+import com.github.amezu.todolist.model.list.ChangeType
 import com.github.amezu.todolist.model.Todo
 import com.github.amezu.todolist.repo.TodosRepository
 import io.reactivex.disposables.CompositeDisposable

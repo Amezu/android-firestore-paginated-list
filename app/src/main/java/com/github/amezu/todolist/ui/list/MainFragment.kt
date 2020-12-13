@@ -1,4 +1,4 @@
-package com.github.amezu.todolist.ui.main
+package com.github.amezu.todolist.ui.list
 
 import android.content.Context
 import android.os.Bundle
@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.amezu.todolist.R
 import com.github.amezu.todolist.di.DaggerMainFragmentComponent
 import com.github.amezu.todolist.model.Todo
-import com.github.amezu.todolist.ui.todo_form.TodoFormFragment
+import com.github.amezu.todolist.ui.form.TodoFormFragment
 import kotlinx.android.synthetic.main.main_fragment.*
 import javax.inject.Inject
 

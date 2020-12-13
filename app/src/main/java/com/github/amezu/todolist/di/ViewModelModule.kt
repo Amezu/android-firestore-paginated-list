@@ -2,8 +2,8 @@ package com.github.amezu.todolist.di
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.github.amezu.todolist.ui.main.MainViewModel
-import com.github.amezu.todolist.ui.todo_form.TodoFormViewModel
+import com.github.amezu.todolist.ui.list.MainViewModel
+import com.github.amezu.todolist.ui.form.TodoFormViewModel
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module

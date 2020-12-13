@@ -1,7 +1,7 @@
 package com.github.amezu.todolist.di
 
-import com.github.amezu.todolist.ui.main.DeleteTodoDialogFragment
-import com.github.amezu.todolist.ui.main.MainFragment
+import com.github.amezu.todolist.ui.list.DeleteTodoDialogFragment
+import com.github.amezu.todolist.ui.list.MainFragment
 import dagger.Component
 import javax.inject.Singleton
 

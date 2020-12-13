@@ -1,4 +1,4 @@
-package com.github.amezu.todolist.ui.todo_form
+package com.github.amezu.todolist.ui.form
 
 import android.content.Context
 import android.os.Bundle

@@ -1,7 +1,7 @@
 package com.github.amezu.todolist.repo
 
-import com.github.amezu.todolist.model.Change
-import com.github.amezu.todolist.model.ChangeType
+import com.github.amezu.todolist.model.list.Change
+import com.github.amezu.todolist.model.list.ChangeType
 import com.github.amezu.todolist.model.Todo
 import com.google.firebase.firestore.*
 

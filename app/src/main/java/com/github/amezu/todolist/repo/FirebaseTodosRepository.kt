@@ -1,6 +1,6 @@
 package com.github.amezu.todolist.repo
 
-import com.github.amezu.todolist.model.Change
+import com.github.amezu.todolist.model.list.Change
 import com.github.amezu.todolist.model.Todo
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase

@@ -1,6 +1,6 @@
 package com.github.amezu.todolist.repo
 
-import com.github.amezu.todolist.model.Change
+import com.github.amezu.todolist.model.list.Change
 import com.github.amezu.todolist.model.Todo
 import io.reactivex.Completable
 import io.reactivex.Observable

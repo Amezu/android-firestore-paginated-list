@@ -1,6 +1,6 @@
 package com.github.amezu.todolist.di
 
-import com.github.amezu.todolist.ui.todo_form.TodoFormFragment
+import com.github.amezu.todolist.ui.form.TodoFormFragment
 import dagger.Component
 import javax.inject.Singleton
 
