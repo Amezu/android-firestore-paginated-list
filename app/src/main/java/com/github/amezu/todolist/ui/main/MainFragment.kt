@@ -110,7 +110,7 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
 
     private fun initFab() {
         fab.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment_to_addTodoFragment)
+            findNavController().navigate(R.id.action_mainFragment_to_todoFormFragment)
         }
     }
 
@@ -125,7 +125,7 @@ class MainFragment : Fragment(), DeleteTodoDialogFragment.Callback {
 
     private fun openEditItemView(item: Todo) {
         findNavController().navigate(
-            R.id.action_mainFragment_to_addTodoFragment,
+            R.id.action_mainFragment_to_todoFormFragment,
             bundleOf("todo" to item)
         )
     }

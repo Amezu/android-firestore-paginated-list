@@ -12,7 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.github.amezu.todolist.R
 import com.github.amezu.todolist.hideKeyboard
 import com.github.amezu.todolist.model.Todo
-import kotlinx.android.synthetic.main.add_todo_fragment.*
+import kotlinx.android.synthetic.main.todo_form_fragment.*
 
 class TodoFormFragment : Fragment() {
     private lateinit var viewModel: TodoFormViewModel
@@ -21,7 +21,7 @@ class TodoFormFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.add_todo_fragment, container, false)
+        return inflater.inflate(R.layout.todo_form_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

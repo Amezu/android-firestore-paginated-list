@@ -2,5 +2,5 @@
     <string name="app_name">Todo List</string>
     <string name="todo_title_hint">Title</string>
     <string name="todo_description_hint">Description</string>
-    <string name="todo_save_btn">Save</string>
+    <string name="todo_form_btn">Save</string>
 </resources>
